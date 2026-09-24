@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
+    <title>login</title>
     <style>
         body {
             font-family: sans-serif;
@@ -20,6 +20,10 @@
             background: #fff;
             border: 1px solid #ddd;
             border-radius: 8px;
+        }
+
+        #registro{
+            text-align: center;
         }
 
         label { display: block; margin-bottom: 4px; }
@@ -48,14 +52,10 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
-        #registro{
-            text-align: center;
-        }
     </style>
 </head>
 <body>
-    <h1><code>Registro</code></h1>
+    <h1><code>BIENVENIDO</code></h1>
 
     <form class="formulario" id="formulario">
         <div>
@@ -64,23 +64,6 @@
             <p id="mensaje-error1" class="mensaje-error"></p>
         </div>
 
-        <div>
-            <label for="desc">Descripción:</label>
-            <input type="text" id="desc" placeholder="Escribe una descripción sobre ti">
-            <p id="mensaje-error2" class="mensaje-error"></p>
-        </div>
-
-        <div>
-            <label for="numero">Numero:</label>
-            <input type="text" id="numero" placeholder="9512923871">
-            <p id="mensaje-error3" class="mensaje-error"></p>
-        </div>
-
-        <div>
-            <label for="edad">Fecha de nacimiento:</label>
-            <input type="text" id="edad" placeholder="AAAA-MM-DD">
-            <p id="mensaje-error4" class="mensaje-error"></p>
-        </div>
 
         <div>
             <label for="contra">Contraseña:</label>
@@ -88,27 +71,28 @@
             <p id="mensaje-error5" class="mensaje-error"></p>
         </div>
 
-        <button type="submit">Enviar</button>
+        <button type="submit">Ingresar</button>
+        <br>
+
 
         <div id="registro">
             <br>
-            <a href="login.html" class="boton">Login</a>
+            <a href="index.html" class="boton">Registrarse</a>
         </div>
     </form>
 
+    
+
+        
+
     <script type="module">
-        import { validarCorreo, soloLetras, validarLongitud, validarPassword } from './js/utileria.js';
+        import { validarCorreo, validarPassword } from './js/utileria.js';
 
         const formulario = document.getElementById("formulario");
         const inputemail = document.getElementById("email");
-        const inputdesc = document.getElementById("desc");
-        const inputNum = document.getElementById("numero");
         const inputContra = document.getElementById("contra");
 
         const mensajeError1 = document.getElementById("mensaje-error1");
-        const mensajeError2 = document.getElementById("mensaje-error2");
-        const mensajeError3 = document.getElementById("mensaje-error3");
-        const mensajeError4 = document.getElementById("mensaje-error4");
         const mensajeError5 = document.getElementById("mensaje-error5");
 
         formulario.addEventListener("submit", evento => {
@@ -117,7 +101,7 @@
             let todoValido = true;
 
             //================CAMPOS VACÍOS=======================
-            if (inputemail.value === '' || inputdesc.value === '' || inputNum.value === '' || inputContra.value === '') {
+            if (inputemail.value === '' || inputContra.value === '') {
                 alert("Campos vacios");
                 todoValido = false;
             }
@@ -130,22 +114,7 @@
                 mensajeError1.textContent = "";
             }
 
-            //===================VALIDACIÓN DE TEXTO=======================
-            if (soloLetras(inputdesc.value) == false) {
-                mensajeError2.textContent = "Por favor, escribe una descripción válida";
-                todoValido = false;
-            } else {
-                mensajeError2.textContent = "";
-            }
-
-            //===================VALIDACIÓN DE NUMERO=======================
-            if (validarLongitud(inputNum.value, 10) == false) {
-                mensajeError3.textContent = "Por favor, escribe un numero válido";
-                todoValido = false;
-            } else {
-                mensajeError3.textContent = "";
-            }
-
+            
             //===================VALIDACIÓN DE CONTRASEÑA=======================
             if (validarPassword(inputContra.value) == false) {
                 mensajeError5.textContent = "La contraseña no cumple con lo requerido";
@@ -163,5 +132,6 @@
 
         });
     </script>
+    
 </body>
 </html>
