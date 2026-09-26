@@ -94,6 +94,7 @@ export const validarPassword = (password) => {
             tieneEspecial = true;    
         }
     }
+    return tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial;
 };
 
 

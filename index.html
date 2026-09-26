@@ -114,8 +114,6 @@
 
         formulario.addEventListener("submit", evento => {
 
-            evento.preventDefault(); // prevenimos por defecto desde el inicio
-
             let todoValido = true;
 
             //================CAMPOS VACÍOS=======================
@@ -181,8 +179,11 @@
             }
 
             //===================RESULTADO FINAL=======================
-            if (todoValido == true) {
+            if (todoValido == false) {
+                evento.preventDefault(); // solo cancelamos el envío si algo falló
+            } else {
                 alert("Exito");
+                // sin preventDefault aquí, el formulario sigue su curso normal y se envía
             }
 
         });
