@@ -94,7 +94,61 @@ export const validarPassword = (password) => {
             tieneEspecial = true;    
         }
     }
-
-    return tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial;
 };
+
+
+
+
+//====================================VALIDACIÓN DE CONTRASEÑA=====================================
+/*
+En esta sección lo que nos llega desde el imput es un String con el siguiente formato: AAAA-MM-DD
+*/
+export const calcularEdad = (fechaNacimiento) => { 
+    //Sabemos que lo que recibimos es un String, sabemos la posicion de cada valor entonces guardamos los valores
+    //en variables separando los años, meses y años, evitando los guiones
+
+    let anoxd= fechaNacimiento.charAt(0)+fechaNacimiento.charAt(1)+fechaNacimiento.charAt(2)+fechaNacimiento.charAt(3);
+    let mes= fechaNacimiento.charAt(5)+fechaNacimiento.charAt(6);
+    let dia= fechaNacimiento.charAt(8)+fechaNacimiento.charAt(9);
     
+
+    //Pasamos a entero nuestras variables que contenian Strings, el 10 representa la base que debemos utilizar, es buena practica
+    anoxd=parseInt(anoxd,10);
+    mes=parseInt(mes,10);
+    dia=parseInt(dia,10);
+
+    //Guardamos la fecha actual para compararla más adelante
+    //Tambien creamos una variable tipo fecha con los datos correspondientes, al mes se le resta 1 porque en el formato debe iniciar en 0(enero=0, diciembre=11) 
+    //guardamos igual una variable "edad" inicializada en cero;
+    const hoy = new Date();
+    const nacimiento = new Date(anoxd, mes - 1, dia);
+    let edad=0;
+
+
+    //comparamos años: Si restamos el año de la fecha actual-el año de la fecha de nacimiento nos dará la edad que cumple la persona en el
+    //año actual, pero no es la edad que tiene, sin embargo la guardamos por si termina siendo la edad correcta
+
+    edad=hoy.getFullYear()-nacimiento.getFullYear();
+
+    if(hoy.getMonth()<nacimiento.getMonth()){
+        edad--;
+        return edad;
+    }
+    
+    if(hoy.getMonth()==nacimiento.getMonth()){
+        if(hoy.getDate()<nacimiento.getDate()){
+            edad--;
+            return edad
+        }
+    }
+    return edad;
+};
+
+//====================================VALIDACIÓN DE EDAD(+18)=====================================
+/*
+llamamos a la funcion anterior para calcular la comparación
+*/
+
+export const MayorDeEdad=(fechaNacimiento)=>{
+    return calcularEdad(fechaNacimiento)>=18;
+}; 

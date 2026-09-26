@@ -78,7 +78,7 @@
 
         <div>
             <label for="edad">Fecha de nacimiento:</label>
-            <input type="text" id="edad" placeholder="AAAA-MM-DD">
+            <input type="date" id="edad" placeholder="AAAA-MM-DD">
             <p id="mensaje-error4" class="mensaje-error"></p>
         </div>
 
@@ -97,13 +97,14 @@
     </form>
 
     <script type="module">
-        import { validarCorreo, soloLetras, validarLongitud, validarPassword } from './js/utileria.js';
+        import { validarCorreo, soloLetras, validarLongitud, validarPassword, calcularEdad,MayorDeEdad  } from './js/utileria.js';
 
         const formulario = document.getElementById("formulario");
         const inputemail = document.getElementById("email");
         const inputdesc = document.getElementById("desc");
         const inputNum = document.getElementById("numero");
         const inputContra = document.getElementById("contra");
+        const inputFecha=document.getElementById("edad");
 
         const mensajeError1 = document.getElementById("mensaje-error1");
         const mensajeError2 = document.getElementById("mensaje-error2");
@@ -113,51 +114,74 @@
 
         formulario.addEventListener("submit", evento => {
 
-            // Empieza en true y cualquier validación que falle lo cambia a false
+            evento.preventDefault(); // prevenimos por defecto desde el inicio
+
             let todoValido = true;
 
             //================CAMPOS VACÍOS=======================
-            if (inputemail.value === '' || inputdesc.value === '' || inputNum.value === '' || inputContra.value === '') {
-                alert("Campos vacios");
+            if (inputemail.value === '') {
+                mensajeError1.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
+            if (inputdesc.value === '') {
+                mensajeError2.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
+            if (inputNum.value === '') {
+                mensajeError3.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
+            if (inputFecha.value === '') {
+                mensajeError4.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
+            if (inputContra.value === '') {
+                mensajeError5.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
 
             //================VALIDACIÓN DEL CORREO=======================
-            if (validarCorreo(inputemail.value) == false) {
+            if (inputemail.value !== '' && validarCorreo(inputemail.value) == false) {
                 mensajeError1.textContent = "Por favor, escribe tu email";
                 todoValido = false;
-            } else {
+            } else if (inputemail.value !== '') {
                 mensajeError1.textContent = "";
             }
 
             //===================VALIDACIÓN DE TEXTO=======================
-            if (soloLetras(inputdesc.value) == false) {
+            if (inputdesc.value !== '' && soloLetras(inputdesc.value) == false) {
                 mensajeError2.textContent = "Por favor, escribe una descripción válida";
                 todoValido = false;
-            } else {
+            } else if (inputdesc.value !== '') {
                 mensajeError2.textContent = "";
             }
 
             //===================VALIDACIÓN DE NUMERO=======================
-            if (validarLongitud(inputNum.value, 10) == false) {
+            if (inputNum.value !== '' && validarLongitud(inputNum.value, 10) == false) {
                 mensajeError3.textContent = "Por favor, escribe un numero válido";
                 todoValido = false;
-            } else {
+            } else if (inputNum.value !== '') {
                 mensajeError3.textContent = "";
             }
 
             //===================VALIDACIÓN DE CONTRASEÑA=======================
-            if (validarPassword(inputContra.value) == false) {
+            if (inputContra.value !== '' && validarPassword(inputContra.value) == false) {
                 mensajeError5.textContent = "La contraseña no cumple con lo requerido";
                 todoValido = false;
-            } else {
+            } else if (inputContra.value !== '') {
                 mensajeError5.textContent = "";
             }
 
+            //===================VALIDACIÓN DE EDAD=======================
+            if (inputFecha.value !== '' && MayorDeEdad(inputFecha.value) == false) {
+                mensajeError4.textContent = "Eres muy joven";
+                todoValido = false;
+            } else if (inputFecha.value !== '') {
+                mensajeError4.textContent = "";
+            }
+
             //===================RESULTADO FINAL=======================
-            if (todoValido == false) {
-                evento.preventDefault();   // un solo preventDefault para todo
-            } else {
+            if (todoValido == true) {
                 alert("Exito");
             }
 
