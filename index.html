@@ -73,6 +73,7 @@
         <div class="modal-contenido" role="dialog" aria-modal="true" aria-labelledby="edadTitulo">
             <h2 id="edadTitulo">Advertencia de edad</h2>
             <p>Debes ser mayor de 18 años para continuar.</p>
+            <p id="edadmensajeAdv"></p>
             <div class="modal-botones">
                 <button id="cerrarEdad">Entendido</button>
             </div>
@@ -106,6 +107,7 @@
         //Recolectamos el modal para poder cambiarle sus propiedades y hacerlo visible, y el boton para agregarle eventos
         const modalEdad= document.getElementById("modalEdad");
         const cerrarEdad=document.getElementById("cerrarEdad")
+        const edadMensaje=document.getElementById("edadmensajeAdv");
 
 
         //En este metodo le vamos a agregar al modal que tenemos una nueva clase, la clase "activo", y se le aplicarán las configuraciones del css
@@ -119,6 +121,10 @@
         //pues la clase ".modal" aparece con una opacidad de cero
         function ocultarModalEdad() {
             modalEdad.classList.remove("activo");
+        }
+
+        function agregarMensaje(mensaje){
+            edadMensaje.textContent = mensaje;
         }
 
         //Le agregamos un evento al boton dentro del modal, en este caso al presionar el click se llamará a la funcion para que desaparezca el modal
@@ -231,6 +237,8 @@
 
             //===================VALIDACIÓN DE EDAD=======================
             if (inputFecha.value !== '' && MayorDeEdad(inputFecha.value) == false) {
+                let anioscum=calcularEdad(inputFecha.value);
+                agregarMensaje("tu edad es de:"+ anioscum +"años cumplidos");
                 mostrarModalEdad();
                 /*
                 Pruebas primarias:
