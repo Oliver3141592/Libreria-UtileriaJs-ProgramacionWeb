@@ -33,7 +33,7 @@
         }
 
         .mensaje-error {
-            color: red;
+            color: rgb(0, 0, 0, 0.5);
             font-size: 0.85rem;
             min-height: 1.2em;
             margin: 4px 0 8px;
@@ -58,34 +58,49 @@
     <h1><code>Registro</code></h1>
 
     <form class="formulario" id="formulario">
+        
+
         <div>
-            <label for="email">Email:</label>
-            <input type="text" id="email" placeholder="Escribe tu email">
-            <p id="mensaje-error1" class="mensaje-error"></p>
+            <label for="email">Nombre de Usuario:</label>
+            <input type="text" id="username" placeholder="Escribe un nombre de usuario">
+            <p id="mensaje-error6" class="mensaje-error">Mayor o igual a 5 caracteres, minimo un numero, una mayuscula y una minuscula</p>
         </div>
 
         <div>
-            <label for="desc">Descripción:</label>
-            <input type="text" id="desc" placeholder="Escribe una descripción sobre ti">
-            <p id="mensaje-error2" class="mensaje-error"></p>
+            <label for="email">Email:</label>
+            <input type="text" id="email" placeholder="Escribe tu email">
+            <p id="mensaje-error1" class="mensaje-error">Ingresa obligatoriamente tu correo institucional</p>
         </div>
+        
 
         <div>
             <label for="numero">Numero:</label>
             <input type="text" id="numero" placeholder="9512923871">
-            <p id="mensaje-error3" class="mensaje-error"></p>
+            <p id="mensaje-error3" class="mensaje-error">tu numero de 10 digitos</p>
         </div>
 
         <div>
             <label for="edad">Fecha de nacimiento:</label>
             <input type="date" id="edad" placeholder="AAAA-MM-DD">
-            <p id="mensaje-error4" class="mensaje-error"></p>
+            <p id="mensaje-error4" class="mensaje-error">Escoge tu fecha de nacimiento en el calendario</p>
         </div>
 
         <div>
             <label for="contra">Contraseña:</label>
             <input type="password" id="contra" placeholder="Escribe una contraseña">
-            <p id="mensaje-error5" class="mensaje-error"></p>
+            <p id="mensaje-error5" class="mensaje-error">Ingresa una contraseña con 8 o más caracteres, minimo una mayuscula, una minuscula, un numero y un caracter especial, NO ESPACIOS</p>
+        </div>
+
+        <div>
+            <label for="contra">Confirmar Contraseña:</label>
+            <input type="password" id="contra2" placeholder="Escribe nuevamente tu contraseña">
+            <p id="mensaje-error7" class="mensaje-error"></p>
+        </div>
+
+        <div>
+            <label for="desc">Descripción:</label>
+            <input type="text" id="desc" placeholder="Escribe una descripción sobre ti">
+            <p id="mensaje-error2" class="mensaje-error">No están permitidos numeros ni caracteres especiales</p>
         </div>
 
         <button type="submit">Enviar</button>
@@ -96,14 +111,17 @@
         </div>
     </form>
 
+    
     <script type="module">
-        import { validarCorreo, soloLetras, validarLongitud, validarPassword, calcularEdad,MayorDeEdad  } from './js/utileria.js';
+        import { validarCorreo, soloLetras, validarLongitud, validarPassword, calcularEdad,MayorDeEdad,validarUsername, confirmarPassword  } from './js/utileria.js';
 
         const formulario = document.getElementById("formulario");
+        const inputUser = document.getElementById("username");
         const inputemail = document.getElementById("email");
         const inputdesc = document.getElementById("desc");
         const inputNum = document.getElementById("numero");
         const inputContra = document.getElementById("contra");
+        const inputContra2 = document.getElementById("contra2");
         const inputFecha=document.getElementById("edad");
 
         const mensajeError1 = document.getElementById("mensaje-error1");
@@ -111,35 +129,66 @@
         const mensajeError3 = document.getElementById("mensaje-error3");
         const mensajeError4 = document.getElementById("mensaje-error4");
         const mensajeError5 = document.getElementById("mensaje-error5");
+        const mensajeError6 = document.getElementById("mensaje-error6");
+        const mensajeError7 = document.getElementById("mensaje-error7");
 
         formulario.addEventListener("submit", evento => {
 
             let todoValido = true;
 
+            
             //================CAMPOS VACÍOS=======================
             if (inputemail.value === '') {
+                mensajeError1.style.color = "red";
                 mensajeError1.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
             if (inputdesc.value === '') {
+                mensajeError2.style.color = "red";
                 mensajeError2.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
             if (inputNum.value === '') {
+                mensajeError3.style.color = "red";
                 mensajeError3.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
             if (inputFecha.value === '') {
+                mensajeError4.style.color = "red";
                 mensajeError4.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
             if (inputContra.value === '') {
+                mensajeError5.style.color = "red";
                 mensajeError5.textContent = "Es necesario llenar el campo";
                 todoValido = false;
             }
+             if (inputContra2.value === '') {
+                mensajeError7.style.color = "red";
+                mensajeError7.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
+             if (inputUser.value === '') {
+                mensajeError6.style.color = "red";
+                mensajeError6.textContent = "Es necesario llenar el campo";
+                todoValido = false;
+            }
 
+            console.log("Por aqui si llega")
+
+            //================VALIDACIÓN DEL USERNAME=======================
+            if (inputUser.value !== '' && validarUsername(inputUser.value) == false) {
+                mensajeError6.style.color = "red";
+                mensajeError6.textContent = "Por favor escribe un username válido";
+                todoValido = false;
+            } else if (inputUser.value !== '') {
+                mensajeError6.textContent = "";
+            }
+
+            
             //================VALIDACIÓN DEL CORREO=======================
             if (inputemail.value !== '' && validarCorreo(inputemail.value) == false) {
+                mensajeError1.style.color = "red";
                 mensajeError1.textContent = "Por favor, escribe tu email";
                 todoValido = false;
             } else if (inputemail.value !== '') {
@@ -148,6 +197,7 @@
 
             //===================VALIDACIÓN DE TEXTO=======================
             if (inputdesc.value !== '' && soloLetras(inputdesc.value) == false) {
+                mensajeError2.style.color = "red";
                 mensajeError2.textContent = "Por favor, escribe una descripción válida";
                 todoValido = false;
             } else if (inputdesc.value !== '') {
@@ -156,6 +206,7 @@
 
             //===================VALIDACIÓN DE NUMERO=======================
             if (inputNum.value !== '' && validarLongitud(inputNum.value, 10) == false) {
+                mensajeError3.style.color = "red";
                 mensajeError3.textContent = "Por favor, escribe un numero válido";
                 todoValido = false;
             } else if (inputNum.value !== '') {
@@ -164,14 +215,25 @@
 
             //===================VALIDACIÓN DE CONTRASEÑA=======================
             if (inputContra.value !== '' && validarPassword(inputContra.value) == false) {
+                mensajeError5.style.color = "red";
                 mensajeError5.textContent = "La contraseña no cumple con lo requerido";
                 todoValido = false;
             } else if (inputContra.value !== '') {
                 mensajeError5.textContent = "";
             }
 
+            //==========VALIDACIÓN DE CONFIRMACIÓN DE CONTRASEÑA==============
+            if (inputContra.value !== ''&&inputContra2.value !== '' && confirmarPassword(inputContra.value,inputContra2.value) == false) {
+                mensajeError7.style.color = "red";
+                mensajeError7.textContent = "La contraseña no es la misma";
+                todoValido = false;
+            } else if (inputContra.value !== ''&&inputContra2.value !== '') {
+                mensajeError7.textContent = "";
+            }
+
             //===================VALIDACIÓN DE EDAD=======================
             if (inputFecha.value !== '' && MayorDeEdad(inputFecha.value) == false) {
+                mensajeError4.style.color = "red";
                 mensajeError4.textContent = "Eres muy joven";
                 todoValido = false;
             } else if (inputFecha.value !== '') {

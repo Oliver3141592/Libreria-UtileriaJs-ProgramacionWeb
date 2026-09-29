@@ -153,3 +153,47 @@ llamamos a la funcion anterior para calcular la comparación
 export const MayorDeEdad=(fechaNacimiento)=>{
     return calcularEdad(fechaNacimiento)>=18;
 }; 
+
+
+//====================================DOS NUEVAS FUNCIONES=====================================
+/*
+Creamos la función de validar un nombre de usuario y la de confirmar contraseña
+*/
+
+export function validarUsername(nombreUsuario) {
+
+    /*IDEA ORIGINAL
+    Los regex sirven mucho pero me interesó más hallar la solución de otra manera
+        const regex = /^[a-zA-Z0-9_]{4,15}$/;
+        return regex.test(nombreUsuario);
+    */
+
+    if (typeof nombreUsuario !== "string") return false;
+
+    if (nombreUsuario.length < 5) return false;
+    let tieneMayuscula = false;
+    let tieneMinuscula = false;
+    let tieneNumero = false;
+
+    for (let i = 0; i < nombreUsuario.length; i++) {
+        const posicion = nombreUsuario[i];   // el carácter en la posición i
+
+        //Uso de codigo ASCII para saber si cumple contiene los caracteres específicos
+        if (posicion >= "A" && posicion <= "Z") {
+            tieneMayuscula = true;
+        } else if (posicion >= "a" && posicion <= "z") {
+            tieneMinuscula = true;
+        } else if (posicion >= "0" && posicion <= "9") {
+            tieneNumero = true;
+        } else if (posicion === " ") {          //Si el usuario incluyó un espacio en su nombre directamente retorna false
+            return false;             
+        } 
+    }
+    //console.log("Si hace esto")
+    return tieneMayuscula && tieneMinuscula && tieneNumero;
+};
+
+
+export function confirmarPassword(password, confirmacion) {
+  return password === confirmacion;
+}
