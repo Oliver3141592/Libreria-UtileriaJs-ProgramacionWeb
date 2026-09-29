@@ -3,59 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
     <title>index</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: #f3f4f6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-        }
-
-        .formulario {
-            width: 320px;
-            padding: 24px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        label { display: block; margin-bottom: 4px; }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .mensaje-error {
-            color: rgb(0, 0, 0, 0.5);
-            font-size: 0.85rem;
-            min-height: 1.2em;
-            margin: 4px 0 8px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #4f46e5;
-            color: #fff;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-        }
-
-        #registro{
-            text-align: center;
-        }
-    </style>
+    
 </head>
+
+
 <body>
     <h1><code>Registro</code></h1>
+    
+   
 
     <form class="formulario" id="formulario">
         
@@ -75,7 +32,7 @@
 
         <div>
             <label for="numero">Numero:</label>
-            <input type="text" id="numero" placeholder="9512923871">
+            <input type="text" id="numero" placeholder="Ej: 9512923871">
             <p id="mensaje-error3" class="mensaje-error">tu numero de 10 digitos</p>
         </div>
 
@@ -109,7 +66,18 @@
             <br>
             <a href="login.html" class="boton">Login</a>
         </div>
+
     </form>
+    <!--============================================CREACIÓN DEL MODAL=========================================================-->
+    <div class="modal" id="modalEdad">
+        <div class="modal-contenido" role="dialog" aria-modal="true" aria-labelledby="edadTitulo">
+            <h2 id="edadTitulo">Advertencia de edad</h2>
+            <p>Debes ser mayor de 18 años para continuar.</p>
+            <div class="modal-botones">
+                <button id="cerrarEdad">Entendido</button>
+            </div>
+        </div>
+    </div>
 
     
     <script type="module">
@@ -132,6 +100,36 @@
         const mensajeError6 = document.getElementById("mensaje-error6");
         const mensajeError7 = document.getElementById("mensaje-error7");
 
+
+        /*=====================================CONFIGURACIÓN PARA el MODAL========================================*/
+
+        //Recolectamos el modal para poder cambiarle sus propiedades y hacerlo visible, y el boton para agregarle eventos
+        const modalEdad= document.getElementById("modalEdad");
+        const cerrarEdad=document.getElementById("cerrarEdad")
+
+
+        //En este metodo le vamos a agregar al modal que tenemos una nueva clase, la clase "activo", y se le aplicarán las configuraciones del css
+        //en las configuraciones del css del modal tenemos ".modal.activo{}" que son las nuevas configuraciones que tendrá el modal
+        //esta funcion tambien la llamaremos cuando no se cumpla la validación de edad
+        function mostrarModalEdad() {
+            modalEdad.classList.add("activo");
+        }
+
+        //Lo mismo pero invertido, ahora le quitamos a nuestro modal la clase de activo para que deje de ser visible
+        //pues la clase ".modal" aparece con una opacidad de cero
+        function ocultarModalEdad() {
+            modalEdad.classList.remove("activo");
+        }
+
+        //Le agregamos un evento al boton dentro del modal, en este caso al presionar el click se llamará a la funcion para que desaparezca el modal
+        //forma no tan apropiada en este caso: cerrarEdad.addEventListener("click"), evento=>{ocultarModalEdad;}
+
+        cerrarEdad.addEventListener("click",ocultarModalEdad);
+
+
+
+
+        /*=================================SEGUIMIENTO DEL FORMULARIO=============================================*/
         formulario.addEventListener("submit", evento => {
 
             let todoValido = true;
@@ -233,17 +231,23 @@
 
             //===================VALIDACIÓN DE EDAD=======================
             if (inputFecha.value !== '' && MayorDeEdad(inputFecha.value) == false) {
+                mostrarModalEdad();
+                /*
+                Pruebas primarias:
                 mensajeError4.style.color = "red";
                 mensajeError4.textContent = "Eres muy joven";
+                */
                 todoValido = false;
             } else if (inputFecha.value !== '') {
                 mensajeError4.textContent = "";
+                ocultarModalEdad();
             }
 
             //===================RESULTADO FINAL=======================
             if (todoValido == false) {
                 evento.preventDefault(); // solo cancelamos el envío si algo falló
             } else {
+                //Originalmente se pensó para que tuviera un alert
                 alert("Exito");
                 // sin preventDefault aquí, el formulario sigue su curso normal y se envía
             }
